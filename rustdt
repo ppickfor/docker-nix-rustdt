@@ -1,0 +1,11 @@
+#!/bin/bash
+if [ -z "$(docker volume ls -qf name=nix-rustdt-eclipse-peter)" ]
+then
+  #build and emply scratch images for volumes container
+  docker volume create --name nix-rustdt-eclipse-${USER}
+  #change the ownership of the $HOME/.eclipse volume
+  docker run --rm -v nix-rustdt-eclipse-${USER}:$HOME/.eclipse -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro  alpine chown $USER $HOME/.eclipse
+fi
+#run the rustdt container with same hostname, user , volumes from above and env vars
+docker run -it --rm --name nix-rustdt --hostname $(hostname) -e USER -e DISPLAY -e HOME -v /tmp/.X11-unix:/tmp/.X11-unix  -v nix-rustdt-eclipse-${USER}:$HOME/.eclipse  -v $HOME/.Xauthority:$HOME/.Xauthority:ro -v $HOME/workspace:$HOME/workspace  -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro  --user ${UID}:${GID} ppickfor/nix-rustdt eclipse
+
