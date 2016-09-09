@@ -23,3 +23,5 @@ ppickfor/nix-rustdt   latest              c7e49d7aa21b        46 years ago      
 ./rustdt
 
 enjoy
+
+TODO: fix font setup
