@@ -17,6 +17,7 @@ let
           xorg.fontadobe100dpi.out
           fontconfig.out
           fontconfig.bin
+          #diagnositics TODO:remove when done
           findutils
           coreutils
           bash
@@ -25,6 +26,11 @@ let
           gnugrep
         ];
       };
+      runAsRoot = ''
+         #!${stdenv.shell}
+         mkdir /tmp
+         chmod a=rwx,o+t /tmp
+       '';
   };
 in {
   rustDtDocker = rustDtImage;
